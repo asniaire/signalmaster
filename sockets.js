@@ -100,7 +100,7 @@ module.exports = function (server, config) {
 
 
         // tell client about stun and turn servers and generate nonces
-        client.emit('stunservers', config.stunservers || []);
+        /*client.emit('stunservers', config.stunservers || []);
 
         // create shared secret nonces for TURN authentication
         // the process is described in draft-uberti-behave-turn-rest
@@ -120,7 +120,7 @@ module.exports = function (server, config) {
                 });
             });
         }
-        client.emit('turnservers', credentials);
+        client.emit('turnservers', credentials);*/
     });
 
 
@@ -137,7 +137,11 @@ module.exports = function (server, config) {
     }
 
     function clientsInRoom(name) {
-        return io.sockets.clients(name).length;
+        var clientsCount = 0;
+        for (var socketId in io.nsps['/'].adapter.rooms[name] || {}) {
+            clientsCount++;
+        }
+        return clientsCount;
     }
 
 };
